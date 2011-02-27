@@ -1,20 +1,27 @@
 <?php
-
+/**
+ * @package    silverstripe-orderable
+ * @subpackage tests
+ */
 class OrderableTest extends SapphireTest {
-	
-	public static $fixture_file = 'orderable/tests/OrderableTest.yml';
-	
-	// Make sure that Orderable works with Versioned DataObjects.
-	public function testOrderableWithVersioned() {
+
+	/**
+	 * Tests that versioned delete operations work with the orderable decorator.
+	 */
+	public function testVersionedOrderableDelete() {
 		$sub = new OrderableTest_VersionedSub();
-		$subID = $sub->write();
+		$sub->write();
 		$sub->publish('Stage', 'Live');
+
 		$sub->deleteFromStage('Live');
 		$sub->delete();
 	}
-	
+
 }
 
+/**
+ * @ignore
+ */
 class OrderableTest_VersionedBase extends DataObject {
 	public static $db = array(
 		'Field1' => 'Text'
@@ -25,9 +32,11 @@ class OrderableTest_VersionedBase extends DataObject {
 	);
 }
 
+/**
+ * @ignore
+ */
 class OrderableTest_VersionedSub extends OrderableTest_VersionedBase {
 	public static $db = array(
 		'Field2' => 'Text'
 	);
 }
-
